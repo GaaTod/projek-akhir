@@ -10,12 +10,16 @@
                     <label class="form-label">Nama</label>
                     <input type="text" class="form-control" placeholder="Masukan nama lengkap">
                 </div>
+
                 <div class="col-md-3">
                     <label class="form-label">Angkatan</label>
                     <select class="form-select">
                         <option value="">Pilih Angkatan</option>
-                        <option>22</option>
-                        <option>23</option>
+                        @forelse ($tampilBiodata as $data)
+                            <option value="{{ $data->angkatan }}">{{ $data->angkatan->angkatan }}</option>
+                        @empty
+                            <option value="" disabled>--Data Kosong--</option>
+                        @endforelse
                     </select>
                 </div>
                 <div class="col-md-4 d-flex">
@@ -30,42 +34,41 @@
         </div>
 
         <!-- Data Alumni -->
-        <div class="alumni-card d-flex justify-content-between align-items-center flex-wrap">
-            <div class="d-flex align-items-center">
-                <div class="alumni-img me-3">
-                    <span>Img</span>
-                </div>
-                <div>
-                    <p class="mb-1"><strong>Nama :</strong> Imam</p>
-                    <p class="mb-1"><strong>NPM :</strong> 22xxxxxxxx12</p>
-                    <p class="mb-1"><strong>No HP :</strong> 0851202021010</p>
+        @forelse ($tampilBiodata as $data)
+            <div class="alumni-card">
+                <div class="row">
+                    <div class="col-lg-9">
+                        <div class="d-flex align-items-center">
+                            <div class="alumni-img me-3">
+                                <div class="col-md-4 mb-3 d-flex justify-content-center">
+                                    <div class=""
+                                        style="width:250px; aspect-ratio:1/1; overflow:hidden; border:1px solid #ddd; border-radius:8px;">
+                                        <img class="img-fluid"
+                                            src="{{ asset('storage/' . $data->gambar ?? 'storage/img/profile.jpg') }}"
+                                            alt="Profile Alumni" style="width:100%; height:100%; object-fit:cover;">
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <p class="mb-1"><strong>Nama :</strong>{{ $data->nama }}</p>
+                                <p class="mb-1"><strong>NPM :</strong> {{ $data->user->npm }}</p>
+                                <p class="mb-1"><strong>No HP :</strong> {{ $data->no_telp }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div>
+                            <p class="mb-1 "><strong>Angkatan :</strong>{{ $data->angkatan->angkatan }}</p>
+                            <p class="mb-1"><strong>Tanggal Lahir :</strong>
+                                {{ \Carbon\Carbon::parse($data->tanggal_lahir)->format('d-m-Y') }}</p>
+                            <p class="mb-1"><strong>Pekerjaan :</strong>{{ $data->pekerjaan }}</p>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div>
-                <p class="mb-0 text-end"> <strong>Komting</strong> </p>
-                <p class="mb-1"><strong>Tanggal Lahir :</strong> XX-XX-XXXX</p>
-                <p class="mb-1"><strong>Pekerjaan :</strong> PNS</p>
-                <p class="mb-1 "><strong>Angkatan :</strong> 22</p>
-            </div>
-        </div>
-
-        <div class="alumni-card d-flex justify-content-between align-items-center flex-wrap">
-            <div class="d-flex align-items-center">
-                <div class="alumni-img me-3">
-                    <span>Img</span>
-                </div>
-                <div>
-                    <p class="mb-1"><strong>Nama :</strong> Agatha</p>
-                    <p class="mb-1"><strong>NPM :</strong> 22xxxxxxxx17</p>
-                    <p class="mb-1"><strong>No HP :</strong> 085XXXXXX10</p>
-                </div>
-            </div>
-            <div>
-                <p class="mb-1"><strong>Tanggal Lahir :</strong> XX-XX-XXXX</p>
-                <p class="mb-1"><strong>Pekerjaan :</strong> Influencer</p>
-                <p class="mb-1 text-end"><strong>Angkatan :</strong> 22</p>
-            </div>
-        </div>
+        @empty
+            <td class="text-center" colspan="5">Belum ada data</td>
+        @endforelse
 
     </div>
 </x-layoutUser>

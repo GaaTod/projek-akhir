@@ -25,6 +25,13 @@ class forumController extends Controller
         //
     }
 
+    public function tampil()
+    {
+        $tampilForum = ModelForum::where('waktu_berakhir', '>', now())->latest()->get();
+
+        return view('users.userForum', compact('tampilForum'));
+    }
+
     /**
      * Store a newly created resource in storage.
      */

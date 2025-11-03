@@ -50,10 +50,9 @@ class AddForumController extends Controller
 
         // Handle upload gambar
         $filename = null;
-        if ($request->hasFile('gambarforum')) {
-            $file = $request->file('gambarforum');
-            // $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
-            $filename = $request->file($file)->store('gambar/barang', 'public');
+        if ($request->hasFile('gambar')) {
+            $file = $request->file('gambar');
+            $filename = $file->store('img/forum', 'public');
         }
 
         // Konversi durasi ke menit

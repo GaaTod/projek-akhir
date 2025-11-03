@@ -77,7 +77,7 @@
                         <div class="col-md-6">
                             <label class="form-label">NPM</label>
                             <input type="text" name="npm" class="form-control"
-                                value="{{ old('npm', $user->npm ?? '') }}">
+                                value="{{ old('npm', $user->npm ?? '') }}" readonly>
                         </div>
 
                         <div class="col-md-6">
@@ -104,23 +104,10 @@
                                 value="{{ old('tanggal_lahir', $user->tb_biodata->tanggal_lahir ?? '') }}">
                         </div>
 
-                        {{-- <div class="col-md-6">
-                            <label class="form-label">Angkatan</label>
-                            <input type="text" name="angkatan" class="form-control"
-                                value="{{ old('angkatan', $user->tb_biodata->angkatan ?? '') }}">
-                        </div> --}}
-
                         <div class="col-md-6">
                             <label class="form-label">Angkatan</label>
-                            <select name="angkatan" class="form-select">
-                                <option value="">-- Pilih Angkatan --</option>
-                                @foreach ($angkatan as $data)
-                                    <option value="{{ $data->id }}"
-                                        {{ old('angkatan', $user->tb_biodata->angkatan_id ?? '') == $data->id ? 'selected' : '' }}>
-                                        {{ $data->angkatan }}
-                                    </option>
-                                @endforeach
-                            </select>
+                            <input type="text" name="angkatan" class="form-control"
+                                value="{{ old('angkatan', $user->tb_biodata->angkatan ?? '') }}" readonly>
                         </div>
 
                         <div class="col-md-6">
@@ -161,38 +148,33 @@
                 </a>
 
             </div>
-            <div class="alumni-card d-flex justify-content-between align-items-center flex-wrap">
-                <div class="d-flex align-items-center">
-                    <div class="alumni-img me-3">
-                        <span>Img</span>
+            @forelse ($tampilForum as $data)
+                <div class="alumni-card d-flex justify-content-between align-items-center flex-wrap">
+                    <div class="d-flex align-items-center">
+                        <div class="alumni-img me-3">
+                            <span>Img</span>
+                        </div>
+                        <div>
+                            <p class="mb-1"><strong>Nama Forum: </strong>{{ $data->nama_forum }}</p>
+                            <p class="mb-1"><strong>Deskripsi: </strong> {{ $data->deskripsi }} </p>
+                        </div>
                     </div>
                     <div>
-                        <p class="mb-1"><strong>Nama Forum:</strong> Imam</p>
-                        <p class="mb-1"><strong>Deskripsi:</strong> Lorem ipsum dolor sit </p>
+                        <p class="mb-0 text-end">
+                            <strong>Status</strong>
+                            @if ($data['waktu_berakhir'] > now())
+                                <span class="badge bg-success">Aktif</span>
+                            @else
+                                <span class="badge bg-danger">Non-Aktif</span>
+                            @endif
+                        </p>
+                        <p class="mb-1 post-meta"><strong>Di posting :</strong>
+                            {{ \Carbon\Carbon::parse($data->created_at)->format('H:i - d/m/Y') }}
+                        </p>
                     </div>
                 </div>
-                <div>
-                    <p class="mb-0 text-end"> <strong>Status</strong> </p>
-                    <p class="mb-1"><strong>Tanggal Di posting :</strong> 10 - 12 - 2025 </p>
-                </div>
-            </div>
-            <div class="alumni-card d-flex justify-content-between align-items-center flex-wrap">
-                <div class="d-flex align-items-center">
-                    <div class="alumni-img me-3">
-                        <span>Img</span>
-                    </div>
-                    <div>
-                        <p class="mb-1"><strong>Nama Forum:</strong> Imam</p>
-                        <p class="mb-1"><strong>Deskripsi:</strong> Lorem ipsum dolor sit </p>
-                    </div>
-                </div>
-                <div>
-                    <p class="mb-0 text-end"> <strong>Status</strong> </p>
-                    <p class="mb-1"><strong>Tanggal Di posting :</strong> 10 - 12 - 2025 </p>
-                </div>
-            </div>
-
-
+            @empty
+            @endforelse
         </form>
     </div>
 </x-layoutUser>

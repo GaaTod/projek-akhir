@@ -112,23 +112,9 @@ Route::delete('/hapus-Forum/{id}', [forumController::class, 'destroy'])->name('d
 
 //User Route
 
-Route::get('/user-data-alumni', function () {
-    return view('users.userAlumni');
-})->name('userAlumni-user');
+Route::get('/user-data-alumni', [BiodataController::class, 'tampil'])->name('userAlumni');
 
-Route::get('/user-data-forum', function () {
-    return view('users.userForum');
-})->name('userForum-user');
-
-// Route::get('/user-tambah-forum', function () {
-//     return view('users.profile.addForum');
-// })->name('addForum-user');
-
-
-// route Verifikasi
-// Route::get('/pengisian-data', function () {
-//     return view('verifikasi');
-// })->name('verifikasi-user');
+Route::get('/user-data-forum',[forumController::class, 'tampil'])->name('userForum');
 
 
 // require __DIR__.'/auth.php';

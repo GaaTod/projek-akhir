@@ -88,7 +88,7 @@
 
                 Swal.fire({
                     title: 'Yakin ingin menghapus?',
-                    text: "Data yang dihapus tidak bisa dikembalikan!",
+                    // text: "Data yang dihapus tidak bisa dikembalikan!",
                     icon: 'warning',
                     showCancelButton: true,
                     confirmButtonColor: '#d33',

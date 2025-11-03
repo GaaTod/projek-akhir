@@ -58,7 +58,7 @@
                                         @php
                                             $login = Auth::user()->id;
                                         @endphp
-                                        @if ($data->user->id != $login)
+                                        @if ($data->user->id == $login)
                                             <a href="" class="btn btn-warning btn-sm">
                                                 <i class="bi bi-pencil-square"></i>
                                             </a>

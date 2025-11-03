@@ -16,6 +16,12 @@ class biodataController extends Controller
         return view('dataAlumni', compact('dataBiodata'));
     }
 
+    public function tampil() 
+    {
+        $tampilBiodata = ModelBiodata::get();
+        return view('users.userAlumni', compact('tampilBiodata'));
+    }
+
     /**
      * Show the form for creating a new resource.
      */
@@ -41,15 +47,9 @@ class biodataController extends Controller
         return view('detailAlumni', compact('biodata'));
     }
 
-    public function edit(string $id)
-    {
+    public function edit(string $id) {}
 
-    }
-
-    public function update(Request $request, string $id)
-    {
-    
-    }
+    public function update(Request $request, string $id) {}
 
     public function destroy(string $id)
     {

@@ -7,6 +7,7 @@ use Illuminate\View\View;
 // use App\Models\ModelBiodata;
 use Illuminate\Http\Request;
 use App\Models\ModelAngkatan;
+use App\Models\ModelForum;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -21,11 +22,14 @@ class ProfileController extends Controller
      */
     public function edit(Request $request): View
     {
-        
+
         $angkatan = ModelAngkatan::all();
+        $tampilForum = ModelForum::where('user_id', Auth::user()->id)->get();
+
         return view('users.profile.edit', [
             'user' => $request->user(),
             'angkatan' => $angkatan,
+            'tampilForum' => $tampilForum
         ]);
     }
 
@@ -54,13 +58,13 @@ class ProfileController extends Controller
             'nama' => 'required|string|max:255',
             'email' => 'required|email|max:255',
             Rule::unique('tb_biodatas', 'email')->ignore($user->tb_biodata->id),
-            'npm' => 'required|string|max:20',
-            Rule::unique('users', 'npm')->ignore($user->id),
+            // 'npm' => 'required|string|max:20',
+            // Rule::unique('users', 'npm')->ignore($user->id),
             'no_telp' => 'nullable|string|max:20',
             'jk' => 'nullable|string|max:20',
             'tempat' => 'nullable|string|max:100',
             'tanggal_lahir' => 'nullable|date',
-            'angkatan' => 'nullable|integer|exists:tb_angkatans,id',
+            // 'angkatan' => 'nullable|integer|exists:tb_angkatans,id',
             'tahun_lulus' => 'nullable|integer',
             'gambar' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
             'pekerjaan' => 'nullable|string|max:255',
@@ -89,7 +93,7 @@ class ProfileController extends Controller
         }
 
         // --- UPDATE USER (npm tetap diupdate walau password tidak diubah) ---
-        $user->npm = $validated['npm'];
+        // $user->npm = $validated['npm'];
         $user->email = $validated['email'];
 
 
@@ -100,7 +104,7 @@ class ProfileController extends Controller
             'jenis_kelamin' => $validated['jk'],
             'tempat' => $validated['tempat'],
             'tanggal_lahir' => $validated['tanggal_lahir'],
-            'angkatan_id' => $validated['angkatan'],
+            // 'angkatan_id' => $validated['angkatan'],
             'tahun_lulus' => $validated['tahun_lulus'],
             'pekerjaan' => $validated['pekerjaan'],
         ])->save();

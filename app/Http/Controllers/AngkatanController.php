@@ -42,12 +42,29 @@ class AngkatanController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'angkatan' => 'required|integer|unique:tb_angkatans,angkatan',
+            'angkatan' => 'required|integer',
         ], [
             'angkatan.required' => 'Kolom angkatan wajib diisi!',
             'angkatan.integer'  => 'Angkatan harus berupa angka!',
-            'angkatan.unique'   => 'Angkatan ini sudah terdaftar!',
         ]);
+
+        // Cek apakah angkatan sudah ada (termasuk yang di-soft delete)
+        $existing = ModelAngkatan::withTrashed()
+            ->where('angkatan', $request->angkatan)
+            ->first();
+
+        if ($existing) {
+            // Jika ada dan sudah dihapus (soft delete), maka restore
+            if ($existing->trashed()) {
+                $existing->restore();
+                return redirect()->back()->with('success', 'Data angkatan berhasil direstore!');
+            }
+
+            // Jika ada dan belum dihapus, tampilkan pesan error
+            return redirect()->back()->withErrors([
+                'angkatan' => 'Angkatan ini sudah terdaftar!',
+            ])->withInput();
+        }
 
         ModelAngkatan::create($request->only('angkatan'));
 
