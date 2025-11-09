@@ -22,7 +22,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($forum as $data)
+                        @forelse ($forum as $data)
                             <tr class="text-center">
                                 <th scope="row">{{ $loop->iteration }}</th>
                                 <td>{{ $data->nama_forum }}</td>
@@ -65,7 +65,11 @@
                                         @endif
                                     </div>
                                 </td>
-                        @endforeach
+                        @empty
+                            <tr>
+                                <td colspan="7" class="text-center">Tidak ada data forum.</td>
+                            </tr>
+                        @endforelse
                     </tbody>
                 </table>
             </div>

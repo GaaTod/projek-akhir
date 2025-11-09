@@ -1,6 +1,6 @@
 <nav id="sidebar" class="sidebar js-sidebar">
     <div class="sidebar-content js-simplebar">
-        <a class="sidebar-brand" href="index.html">
+        <a class="sidebar-brand" href="{{ route('dashboard.admin') }}">
             <span class="align-middle">Sistem Informasi Alumni</span>
         </a>
 

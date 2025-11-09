@@ -7,6 +7,7 @@ use App\Http\Requests\Auth\LoginRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 use Illuminate\View\View;
 
 class AuthenticatedSessionController extends Controller
@@ -31,14 +32,25 @@ class AuthenticatedSessionController extends Controller
         // Ambil user yang sedang login
         $user = $request->user();
 
-        // Tentukan redirect sesuai role
+        // Cek role admin → SELALU ke dashboard admin
         if ($user->role === 'admin') {
             return redirect()
-                ->intended(route('dashboard.admin'))
+                ->route('dashboard.admin')
                 ->with('success', 'Selamat datang kembali, Admin!');
-        } elseif ($user->role === 'alumni') {
+        }
+
+        // Ambil redirect_to (jika user alumni login dari forum)
+        $redirectTo = $request->input('redirect_to');
+
+        // Validasi URL redirect_to agar tidak open redirect
+        if ($redirectTo && Str::startsWith($redirectTo, url('/'))) {
+            return redirect()->to($redirectTo)->with('success', 'Login berhasil.');
+        }
+
+        // Jika tidak ada redirect_to, arahkan sesuai role user
+        if ($user->role === 'alumni') {
             return redirect()
-                ->intended(route('dashboard.user'))
+                ->route('dashboard.user')
                 ->with('success', 'Login berhasil! Selamat datang di dashboard alumni.');
         }
     }
@@ -54,6 +66,6 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerateToken();
 
-        return redirect('/')->with('success','Berhasil Logout');
+        return redirect('/')->with('success', 'Berhasil Logout');
     }
 }

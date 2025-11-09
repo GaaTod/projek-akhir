@@ -1,7 +1,7 @@
 <x-layoutUser>
     <!-- Hero Section -->
     <section class="hero">
-        <img src="{{ asset('storage/img/LoginScreen.jpg') }}" alt="Gedung Kampus">
+        <img src="https://picsum.photos/1200/675?blur=1" alt="Gedung Kampus">
         <div class="hero-text">
             <h1>
                 SELAMAT DATANG <br>

@@ -2,9 +2,10 @@
 
 namespace App\Models;
 
+use App\Http\Controllers\KomentarController;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class ModelForum extends Model
 {
@@ -25,4 +26,10 @@ class ModelForum extends Model
     {
         return $this->belongsTo(user::class, 'user_id');
     }
+
+    public function comments()
+    {
+        return $this->hasMany(ModelKomentar::class,'forum_id')->latest();
+    }
+    
 }

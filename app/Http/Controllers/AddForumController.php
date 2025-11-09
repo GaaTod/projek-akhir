@@ -94,7 +94,10 @@ class AddForumController extends Controller
      */
     public function show(string $id)
     {
-        //
+        // ambil forum + user + komentar + user komentar
+        $forum = ModelForum::with(['user', 'comments'])->findOrFail($id);
+        
+        return view('users.userDetailForum', compact('forum'));
     }
 
     /**

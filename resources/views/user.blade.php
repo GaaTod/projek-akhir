@@ -20,6 +20,9 @@
                             </tr>
 
                         @empty
+                            <tr>
+                                <td colspan="3" class="text-center">Tidak ada data user.</td>
+                            </tr>
                         @endforelse
                     </tbody>
                 </table>

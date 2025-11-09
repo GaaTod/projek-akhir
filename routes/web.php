@@ -1,11 +1,13 @@
 <?php
 
-use App\Http\Controllers\AddForumController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\forumController;
 use App\Http\Controllers\biodataController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\AddForumController;
 use App\Http\Controllers\AngkatanController;
+use App\Http\Controllers\KomentarController;
 use App\Http\Controllers\Auth\PasswordController;
 use App\Http\Controllers\DashboardUserController;
 use App\Http\Controllers\Auth\NewPasswordController;
@@ -16,7 +18,6 @@ use App\Http\Controllers\Auth\ConfirmablePasswordController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\EmailVerificationPromptController;
 use App\Http\Controllers\Auth\EmailVerificationNotificationController;
-use App\Http\Controllers\forumController;
 
 // ROUTE USER
 Route::get('/', [DashboardUserController::class, 'index'])->name('dashboard.user');
@@ -68,53 +69,56 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
+
+    // admin Route
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    })->name('dashboard.admin');
+
+    Route::get('/user', [UserController::class, 'index'])->name('user-admin');
+
+    Route::get('/data-Alumni', [biodataController::class, 'index'])->name('dataAlumni-admin');
+    Route::get('/detail-alumni/{id}', [biodataController::class, 'show'])->name('detailAlumni-admin');
+    // Route::get('/edit-alumni/{id}', [biodataController::class, 'edit'])->name('editAlumni-admin');
+    // Route::put('/update-alumni/{id}', [biodataController::class, 'update'])->name('updateAlumni-admin');
+    Route::delete('/hapus-alumni/{id}', [biodataController::class, 'destroy'])->name('hapusAlumni-admin');
+
+    Route::prefix('admin')->name('angkatan.')->group(function () {
+        Route::controller(AngkatanController::class)->group(function () {
+            Route::get('/angkatan', 'index')->name('index');
+            Route::post('/angkatan', 'store')->name('store');
+            Route::put('/angkatan/{id}', 'update')->name('update');
+            Route::delete('/angkatan/{id}', 'destroy')->name('destroy');
+        });
+    });
+
+    // Admin Forum Route
+    Route::get('/data-Forum', [forumController::class, 'index'])->name('dataForum-admin');
+    Route::post('/data-Forum', [forumController::class, 'store'])->name('dataForum-admin-store');
+    Route::get('/edit-Forum', [forumController::class, 'edit'])->name('dataForum-admin-edit');
+    Route::get('/detail-Forum/{id}', [forumController::class, 'show'])->name('detailForum-admin');
+    Route::delete('/hapus-Forum/{id}', [forumController::class, 'destroy'])->name('dataForum-admin-delete');
+
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::get('/profile/tambah-forum', [AddForumController::class,'index'])->name('addForum-user');
+    Route::get('/profile/tambah-forum', [AddForumController::class, 'index'])->name('addForum-user');
     Route::post('/profile/tambah-forum/store', [AddForumController::class, 'store'])->name('tambahforum-store');
 });
 
-// admin Route
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->name('dashboard.admin');
+Route::get('/user-data-alumni', [BiodataController::class, 'tampil'])->name('userAlumni');
 
-Route::get('/user', [UserController::class, 'index'])->name('user-admin');
+Route::get('/user-data-forum', [forumController::class, 'tampil'])->name('userForum');
+Route::get('/user-data-forum/{id}', [addForumController::class, 'show'])->name('detailForum-user');
 
-Route::get('/data-Alumni', [biodataController::class, 'index'])->name('dataAlumni-admin');
-Route::get('/detail-alumni/{id}', [biodataController::class, 'show'])->name('detailAlumni-admin');
-// Route::get('/edit-alumni/{id}', [biodataController::class, 'edit'])->name('editAlumni-admin');
-// Route::put('/update-alumni/{id}', [biodataController::class, 'update'])->name('updateAlumni-admin');
-Route::delete('/hapus-alumni/{id}', [biodataController::class, 'destroy'])->name('hapusAlumni-admin');
 
-Route::prefix('admin')->name('angkatan.')->group(function () {
-    Route::controller(AngkatanController::class)->group(function () {
-        Route::get('/angkatan', 'index')->name('index');
-        Route::post('/angkatan', 'store')->name('store');
-        Route::put('/angkatan/{id}', 'update')->name('update');
-        Route::delete('/angkatan/{id}', 'destroy')->name('destroy');
-    });
-});
+Route::post('/user-data-forum/komentar', [KomentarController::class, 'store'])
+    ->middleware(['auth','throttle:20,1']) // optional throttle
+    ->name('komentar.store');
 
 // Route::get('/data-Angkatan', function () {
 //     return view('dataAngkatan');
 // })->name('dataAngkatan-admin');
-
-Route::get('/data-Forum', [forumController::class, 'index'])->name('dataForum-admin');
-Route::post('/data-Forum', [forumController::class, 'store'])->name('dataForum-admin-store');
-Route::get('/edit-Forum', [forumController::class, 'edit'])->name('dataForum-admin-edit');
-Route::get('/detail-Forum/{id}', [forumController::class, 'show'])->name('detailForum-admin');
-Route::delete('/hapus-Forum/{id}', [forumController::class, 'destroy'])->name('dataForum-admin-delete');
-
-
-
-//User Route
-
-Route::get('/user-data-alumni', [BiodataController::class, 'tampil'])->name('userAlumni');
-
-Route::get('/user-data-forum',[forumController::class, 'tampil'])->name('userForum');
-
 
 // require __DIR__.'/auth.php';

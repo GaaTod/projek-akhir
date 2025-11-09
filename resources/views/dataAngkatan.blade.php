@@ -86,7 +86,7 @@
                                 </div>
                             </div>
                         @empty
-                            <td class="text-center" colspan="4">Belum ada data</td>
+                            <td class="text-center" colspan="6">Belum ada data</td>
                         @endforelse
                     </tbody>
                 </table>

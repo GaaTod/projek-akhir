@@ -46,12 +46,12 @@
                             <label class="form-label fw-bold">Jenis Kelamin</label>
                             <input type="text" class="form-control" value="{{ $biodata->jenis_kelamin }}" readonly>
                         </div>
-                        <div class="col-6">
+                        <div class="col-6 mb-3">
                             <label class="form-label fw-bold">Tempat</label>
                             <input type="text" class="form-control" value="{{ Str::title($biodata->tempat) }}"
                                 readonly>
                         </div>
-                        <div class="col-6">
+                        <div class="col-6 mb-3">
                             <label class="form-label fw-bold">Tanggal Lahir</label>
                             <input type="text" class="form-control"
                                 value="{{ \Carbon\Carbon::parse($biodata->tanggal_lahir)->format('d-m-Y') }}" readonly>

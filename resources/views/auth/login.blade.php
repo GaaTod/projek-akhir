@@ -18,9 +18,16 @@
                 </div>
             @endif
 
+            @if (session('error'))
+                <div class="alert alert-danger">
+                    {{ session('error') }}
+                </div>
+            @endif
+
             <form method="POST" action="{{ route('login.store') }}">
                 @csrf
                 <div class="mb-3">
+                    <input type="hidden" name="redirect_to" value="{{ request('redirect_to') }}">
                     <label for="npm" class="form-label">NPM <span class="text-danger">*</span></label>
                     <input type="text" class="form-control" id="npm" name="npm" placeholder="Masukkan npm"
                         autocomplete="off">
